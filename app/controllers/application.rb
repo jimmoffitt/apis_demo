@@ -2,9 +2,16 @@ require "sinatra"
 
 class Application < Sinatra::Base
  
+  attr_accessor :tweets
+ 
+  def initialize
+    super()
+    @my_tweets = []
+  end  
+
   #Load authentication details
   keys = {}
-  keys = YAML::load_file('./config/accounts_private.yaml')
+  keys = YAML::load_file('./config/accounts.yaml')
   set :gnip_account_name, keys['gnip']['account_name']
   set :gnip_user_name, keys['gnip']['user_name']
   set :gnip_password, keys['gnip']['password']
@@ -32,9 +39,11 @@ class Application < Sinatra::Base
 
   	puts "Calling get_tweets with #{settings.gnip_user_name}"
 
-    query = "snowman" #Need to URL encode
+    #query = "from%3Asnowman" #Need to URL encode
+    query = "snowman" 
 
   	@tweets = SearchTweet.query(query, settings)
+    puts "Tweets: #{@tweets}"
 
     erb :search_results
 
@@ -51,7 +60,11 @@ class Application < Sinatra::Base
 
   #Gnip Engagement API ---------------------------------------------------------
   get '/get_engagements' do
-    puts "Calling get_engagements with #{settings.consumer_key}"
+    puts "Calling get_engagements with #{settings.consumer_key} and #{@my_tweets}"
+
+    results = Engagement.get_metrics(tweets, settings)
+
+    erb :engagement_results, :locals => {:results => results}
   end
 
   get '/show_engagements' do

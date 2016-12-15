@@ -7,18 +7,16 @@ require 'zlib'
 #OK, the first goal here is to simply make a call to the /totals endpoint with @tweets collection.
 class Engagement
 
-	attr_accessor: api
+	attr_accessor :api
 
-	def initialize
+	def self.initialize
 		puts 'Spinning up Engagement API object.'
-
     end 	
 
-    def assemble_request(tweets)
+    def self.assemble_request(tweets)
 
     	request = {}
     	request['tweet_ids'] = tweets
-
 
         #TODO - Hardcoded
     	request['engagement_types'] = []
@@ -38,7 +36,7 @@ class Engagement
     end
 
 
-    def make_post_request(tweets)
+    def self.make_post_request(tweets)
 
     	uri_path = "/insights/engagement/totals"
 
@@ -47,6 +45,8 @@ class Engagement
 			get_api_access if @api.nil? #token timeout?
 
 			request = assemble_request(tweets)
+
+			puts "REQUEST: #{request}"
  
             result = @api.post(uri_path, request, {"content-type" => "application/json", "Accept-Encoding" => "gzip"})
 		 
@@ -58,20 +58,23 @@ class Engagement
 			   puts 'ERROR with Engagement API request.'
 		    end
 
+		    puts result.body
+
             result.body
 	    rescue
 		    puts "Error making POST request. "
+		    puts response.body
 	    end
     end	
 
-	def get_api_access(keys)
+	def self.get_api_access(keys)
+
+      puts "OAuth authentication!"
 
       base_url = 'https://data-api.twitter.com'
-      
-
+    
 	  consumer = OAuth::Consumer.new(keys.consumer_key, keys.consumer_secret, {:site => base_url})
-	  token = {:oauth_token => keys.access_token, :oauth_token_secret => keys.access_token_secret
-	  }
+	  token = {:oauth_token => keys.access_token, :oauth_token_secret => keys.access_token_secret }
 
 	  @api = OAuth::AccessToken.from_hash(consumer, token)
 
@@ -81,11 +84,22 @@ class Engagement
 
     def self.get_metrics(tweets, keys)
 
+    	puts tweets
+       
+      if tweets.nil? or tweets.count == 0
+	      tweets = []
+	      tweets << '806981306773020672'
+	      tweets << '806980377189425152'
+	      tweets << '806972782206734336' 
+	  end
+
+      puts "get_metrics with #{tweets} and #{keys}"	
+
    	  @api = get_api_access(keys)
 
-  	  response = make_post_request(tweets)
+   	  puts "make first Engagment API call!"
 
-      puts response 
+  	  response = make_post_request(tweets)
     
     end
 
