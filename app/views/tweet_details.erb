@@ -1,0 +1,22 @@
+<% if @tweets %>
+   <% puts "IN tweet_details ERB: tweet counts: #{@tweets.count}" %>
+   <% puts "IN tweet_details ERB: #{@tweets[0]["id"]}" %>
+   <% puts "IN tweet_details ERB: #{@tweets[0]["actor"]["preferredUsername"]}" %>
+   <% puts "IN tweet_details ERB: #{@tweets[0]["body"]}" %>
+
+<h2> Tweet Detail Display </h2>
+
+<h3> Source: 30-day Search with query: "snowman" </h3>
+<h3> Request: GET /prod.json?query=snowman&maxResults=10</h3>
+
+<h2> Details </h2>
+
+<h4>
+  <%  @tweets[0] %>
+</h4>
+
+
+<% end %>
+
+
+<a href="/display_search_results">Back to Tweet summary</a>
