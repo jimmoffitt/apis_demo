@@ -9,7 +9,11 @@ Written in Ruby using Sinatra web framework.
 
 TO DOs:
 
+
 [] Oauth with Faraday? Use Oauth gem ?
+
 [] Refactor Engagement API client and plug in.
+
 [] Refactor Audience API client and plug in. 
+
 [] Progress bar for many-requests sequences...
