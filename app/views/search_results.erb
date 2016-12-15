@@ -1,0 +1,39 @@
+<% if @tweets %>
+   <!-- <% puts "IN ERB: tweet counts: #{@tweets.count}" %> -->
+   <!-- <% puts "IN ERB: #{@tweets[0]["id"]}" %>  -->
+   <!-- <% puts "IN ERB: #{@tweets[0]["actor"]["preferredUsername"]}" %> -->
+   <!-- <% puts "IN ERB: #{@tweets[0]["body"]}" %> -->
+
+<h2> Search Tweet Display    </h2>
+
+<h3> Source: 30-day Search with query: "snowman" </h3>
+<h3> Request: GET /prod.json?query=snowman&maxResults=10</h3>
+
+<h2> Summaries </h2>
+
+  <table>
+
+
+    <thead>
+      <tr>
+        <th>Tweet ID</th>
+        <th>Actor ID</th>
+        <th>Actor</th>
+        <th>Body</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tweets.each do |tweet| %>
+        <tr>
+          <td><%= tweet["id"].split(':')[-1] %></td>
+          <td><%= tweet["actor"]["id"].split(':')[-1] %></td>
+          <td><%= tweet["actor"]["preferredUsername"] %></td>
+          <td><%= tweet["body"]%></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<h2> Details </h2>
+<a href="/tweet_details">Click for details</a>
