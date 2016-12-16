@@ -38,17 +38,19 @@ class Application < Sinatra::Base
   	puts "Calling get_tweets with #{settings.gnip_user_name}"
 
     #query = "from%3Asnowman" #Need to URL encode
-    query = "snowman" 
+    query = "snowman winter (today OR tonight OR white)"
 
   	@tweets = SearchTweet.query(query, settings)
-    puts "Tweets: #{@tweets}"
+    puts "Tweets: #{@tweets.count}"
 	
 	#Save Tweet IDs
-	filer = Filer.new
-	filer.write_ids('tweet_ids.dat', 'tweet_id', @tweets)
-	filer.write_ids('user_ids.dat', 'user_id', @tweets)
+	if @tweets.count > 0 
+	   filer = Filer.new
+	   filer.write_ids('tweet_ids.dat', 'tweet_id', @tweets)
+	   filer.write_ids('user_ids.dat', 'user_id', @tweets)
+	end
     
-	erb :search_results
+	erb :search_results, :locals => {:query => query}
 
   end
 
