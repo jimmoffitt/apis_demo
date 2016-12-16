@@ -13,17 +13,19 @@ TO DOs:
 
 [X] Oauth with Faraday? No. Use Oauth gem? Yes.
 
-[] Passing Tweet/User IDs between models.
+[X] Add in Engagement API. Refactor Engagement API client and plug in? Probably not?
 
-[] UI for defining search.
+[X] Add in Audience API. Refactor Audience API client and plug in? Probably not?
+
+[X] Passing Tweet/User IDs between models.
 
 [] Manage multiple requests.
 
+[] Add in Engagement client's 'Top Tweets'. 
+
 [] Store Tweets/metadata in mongodb?
 
-[] Refactor Engagement API client and plug in?
-
-[] Refactor Audience API client and plug in? 
+[] UI for defining search.
 
 [] Progress bar for many-requests sequences.
 

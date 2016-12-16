@@ -73,16 +73,12 @@ class Application < Sinatra::Base
     erb :engagement_results, :locals => {:results => results}
   end
 
-  get '/show_engagements' do
-   puts 'show_engagements'
-  end
-
   #Gnip Audience API ---------------------------------------------------------
   get '/get_audience' do
 	 filer = Filer.new
 	 user_ids = filer.read_ids('user_ids.dat')
 
-	 results = Audeince.build_segment(user_ids, settings)
+	 results = Audience.create_and_query_audience(user_ids, settings)
 	 
 	 erb :audience_results, :locals => {:results => results}
 	 

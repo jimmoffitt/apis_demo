@@ -56,9 +56,8 @@ class Engagement
 			   puts 'ERROR with Engagement API request.'
 		    end
 
-		    #puts result.body
-
-            result.body
+            JSON.parse(result.body)
+			   
 	    rescue
 		    puts "Error making POST request to Engagement API. "
 		    puts response.body
@@ -77,15 +76,6 @@ class Engagement
     end
 
     def self.get_metrics(tweets, keys)
-
-      if tweets.nil? or tweets.count == 0
-	      tweets = []
-	      tweets << '806981306773020672'
-	      tweets << '806980377189425152'
-	      tweets << '806972782206734336' 
-	  end
-
-      puts "get_metrics with #{tweets} and #{keys}"	
 
    	  @api = get_api_access(keys)
 
