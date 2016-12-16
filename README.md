@@ -9,11 +9,18 @@ Written in Ruby using Sinatra web framework.
 
 TO DOs:
 
+[X] Basic Auth call for 30-day Search
+[X] Oauth with Faraday? Use Oauth gem?
 
-[] Oauth with Faraday? Use Oauth gem ?
 
-[] Refactor Engagement API client and plug in.
+[] Passing Tweet/User IDs between models.
+[] UI for defining search.
 
-[] Refactor Audience API client and plug in. 
+[] Manage multiple requests.
+[] Store Tweets/metadata in mongodb?
 
-[] Progress bar for many-requests sequences...
+[] Refactor Engagement API client and plug in?
+[] Refactor Audience API client and plug in? 
+
+[] Progress bar for many-requests sequences.
+[] UI status updates.
