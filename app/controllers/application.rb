@@ -68,8 +68,6 @@ class Application < Sinatra::Base
 	filer = Filer.new
 	tweet_ids = filer.read_ids('tweet_ids.dat')
 	
-	
-
     results = Engagement.get_metrics(tweet_ids, settings)
 
     erb :engagement_results, :locals => {:results => results}
@@ -81,7 +79,14 @@ class Application < Sinatra::Base
 
   #Gnip Audience API ---------------------------------------------------------
   get '/get_audience' do
-    puts "Calling get_audience with #{settings.consumer_key}"
+	 filer = Filer.new
+	 user_ids = filer.read_ids('user_ids.dat')
+
+	 results = Audeince.build_segment(user_ids, settings)
+	 
+	 erb :audience_results, :locals => {:results => results}
+	 
+	 
   end
 
   get '/show_audience' do
