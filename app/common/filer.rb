@@ -25,7 +25,7 @@ class Filer
 	  for line in file
 
 		 # Now insert the data stored in the line variable into the array
-		 ids.push(line)
+		 ids.push(line.strip)
 
 	  end
 

@@ -27,12 +27,15 @@ class Audience
   
     end
 
+    def self.make_post_request(request, destination, object_id = nil, extra = nil) #object_id is either a segment or audience id for api uri_path.
 
-    def self.make_post_request(request, object_id = nil) #object_id is either a segment or audience id for api uri_path.
-
-    	uri_path = "/insights/audience/"
+    	uri_path = "/insights/audience/#{destination}"
 		
-		uri_path = "#{uri_path}#{object_id}/" if not object_id.nil? 
+		uri_path = "#{uri_path}/#{object_id}" if not object_id.nil?
+
+		uri_path = "#{uri_path}/#{extra}" if not extra.nil?
+
+		puts uri_path
 		
 		begin
 
@@ -40,7 +43,7 @@ class Audience
 
 			puts "REQUEST: #{request}"
  
-            result = @api.post(uri_path, request, {"content-type" => "application/json", "Accept-Encoding" => "gzip"})
+            result = @api.post(uri_path, request, {"content-type" => "application/json"})
 		 
 			puts "Result: #{result}"
 			puts "Result body: #{result.body}"
@@ -108,27 +111,29 @@ class Audience
 	def self.build_groupings
 	   
 	   groupings = {}
+	   
+	   groupings['groupings'] = {}
+	   
+	   groupings['groupings']['age'] = {}
+	   groupings['groupings']['age']['group_by'] = []
+	   groupings['groupings']['age']['group_by'] << "user.age"
 
-	   groupings['age'] = {}
-	   groupings['age']['group_by'] = []
-	   groupings['age']['group_by'] << "user.age"
+	   groupings['groupings']['gender'] = {}
+	   groupings['groupings']['gender']['group_by'] = []
+	   groupings['groupings']['gender']['group_by'] << "user.gender"
 
-	   groupings['gender'] = {}
-	   groupings['gender']['group_by'] = []
-	   groupings['gender']['group_by'] << "user.gender"
+	   groupings['groupings']['language'] = {}
+	   groupings['groupings']['language']['group_by'] = []
+	   groupings['groupings']['language']['group_by'] << "user.language"
 
-	   groupings['language'] = {}
-	   groupings['language']['group_by'] = []
-	   groupings['language']['group_by'] << "user.language"
+	   groupings['groupings']['interest'] = {}
+	   groupings['groupings']['interest']['group_by'] = []
+	   groupings['groupings']['interest']['group_by'] << "user.interest"
 
-	   groupings['interest'] = {}
-	   groupings['interest']['group_by'] = []
-	   groupings['interest']['group_by'] << "user.interest"
-
-	   groupings['country_metro'] = {}
-	   groupings['country_metro']['group_by'] = []
-	   groupings['country_metro']['group_by'] << "user.location.country"
-	   groupings['country_metro']['group_by'] << "user.location.metro"
+	   groupings['groupings']['country_metro'] = {}
+	   groupings['groupings']['country_metro']['group_by'] = []
+	   groupings['groupings']['country_metro']['group_by'] << "user.location.country"
+	   groupings['groupings']['country_metro']['group_by'] << "user.location.metro"
 
 	   groupings.to_json
 	end
@@ -136,6 +141,8 @@ class Audience
 
 	def self.create_and_query_audience(users, keys)
 
+	  #TODO: need to check for existing Segments/Audiences? Delete 'demo' objects each time?
+	   
 	  if users.count < 500
 		 return "Not enough users to create audience. The minimum is 500. Have #{users.count}."
       end
@@ -146,21 +153,29 @@ class Audience
 
 	  #Create Segment.
 	  request = create_segment_request('demo')
-	  response = make_post_request(request)
+	  response = make_post_request(request, 'segments')
+	  puts "Response: #{response}"
 	  segment_id = response['id']
+	  
+	  puts "Built Segment #{segment_id}"
 	   
 	  #Add User IDs to Segment.
+	  puts "Adding users to Segment #{segment_id}."
 	  request = add_users_to_segment_request(users)
-	  response = make_post_request(request, segment_id)
+	  response = make_post_request(request, 'segments', segment_id, 'ids')
 	  	   
 	  #Create Audience.
+	  puts "Creating Audience with #{segment_id}."
 	  request = create_audience_request('demo', segment_id)
-	  response = make_post_request(request)
+	  response = make_post_request(request, 'audiences')
 	  audience_id = response['id']
+
+	  puts "Built Audience #{audience_id}"
 	  
 	  #Create Audience.
 	  request = build_groupings
-	  response = make_post_request(request, audience_id)
+	  puts "Querying Audience with #{audience_id} with #{request}."
+	  response = make_post_request(request, 'audiences', audience_id, 'query')
 
       response
 

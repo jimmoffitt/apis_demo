@@ -9,7 +9,7 @@ class Application < Sinatra::Base
 
   #Load authentication details
   keys = {}
-  keys = YAML::load_file('./config/accounts.yaml')
+  keys = YAML::load_file('./config/accounts_private.yaml')
   #Gnip APIs with Basic Authentication.
   set :gnip_account_name, keys['gnip']['account_name']
   set :gnip_user_name, keys['gnip']['user_name']
@@ -47,7 +47,7 @@ class Application < Sinatra::Base
   	puts "Calling get_tweets with #{settings.gnip_user_name}"
 
     #query = "from%3Asnowman" #Need to URL encode
-    query = "snowman winter (today OR tonight OR white)"
+    query = "snowman winter (today OR tonight OR white OR kids)"
 
   	@tweets = SearchTweet.query(query, settings)
     puts "Tweets: #{@tweets.count}"
@@ -74,8 +74,7 @@ class Application < Sinatra::Base
 
   #Gnip Engagement API ---------------------------------------------------------
   get '/get_engagements' do
-    puts "Calling get_engagements with #{settings.consumer_key} and #{@my_tweets}"
-	
+
 	filer = Filer.new
 	tweet_ids = filer.read_ids('tweet_ids.dat')
 	

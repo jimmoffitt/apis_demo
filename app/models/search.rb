@@ -25,14 +25,13 @@ class SearchTweet
 		
         results_data = JSON.parse(response.body)
 		
+		puts "RESPONSE #{results_data}"
+		puts "NEXT TOKEN: #{results_data['next']}"
 
-		
 		puts "Got #{results_data['results'].count} Tweets. Next Token: #{results_data['next']}"
 
 		results_data['results'].each do |tweet|
-		   #puts "new Tweet object with #{data}"
 		   tweets << tweet
-		   #puts "New Tweet object with #{tweet.id}"
 		end
 		
 		puts "NEXT TOKEN: #{next_token}"
