@@ -10,14 +10,21 @@ class Application < Sinatra::Base
   #Load authentication details
   keys = {}
   keys = YAML::load_file('./config/accounts.yaml')
+  #Gnip APIs with Basic Authentication.
   set :gnip_account_name, keys['gnip']['account_name']
   set :gnip_user_name, keys['gnip']['user_name']
   set :gnip_password, keys['gnip']['password']
-  set :consumer_key, keys['engagement_app']['consumer_key']
-  set :consumer_secret, keys['engagement_app']['consumer_secret']
-  set :access_token, keys['engagement_app']['access_token']
-  set :access_token_secret, keys['engagement_app']['access_token_secret']
-  
+  #Engagement API with OAuth keys.
+  set :engagement_consumer_key, keys['engagement_app']['consumer_key']
+  set :engagement_consumer_secret, keys['engagement_app']['consumer_secret']
+  set :engagement_access_token, keys['engagement_app']['access_token']
+  set :engagement_access_token_secret, keys['engagement_app']['access_token_secret']
+  #Audiencet API with OAuth keys.
+  set :audience_consumer_key, keys['audience_app']['consumer_key']
+  set :audience_consumer_secret, keys['audience_app']['consumer_secret']
+  set :audience_access_token, keys['audience_app']['access_token']
+  set :audience_access_token_secret, keys['audience_app']['access_token_secret']
+
   get '/' do
     erb :dashboard
   end
@@ -25,11 +32,13 @@ class Application < Sinatra::Base
   #Gnip Search API -------------------------------------------------------------
 
   #This will point to UI for creating a Search request. 
-  get '/create_request' do
+  get '/create_search_request' do
 
     #Collecting the following
     #query, fromDate, toDate
     #future options? maxResults, searchType
+	 
+	erb :create_search_request
 
   end
 

@@ -28,7 +28,7 @@ class Audience
     end
 
 
-    def self.make_post_request(users, object_id = nil) #object_id is either a segment or audience id for api uri_path.
+    def self.make_post_request(request, object_id = nil) #object_id is either a segment or audience id for api uri_path.
 
     	uri_path = "/insights/audience/"
 		
@@ -36,27 +36,29 @@ class Audience
 		
 		begin
 
-			get_api_access if @api.nil? #token timeout?
-
-			request = assemble_request(users)
+			#get_api_access if @api.nil? #token timeout?
 
 			puts "REQUEST: #{request}"
  
             result = @api.post(uri_path, request, {"content-type" => "application/json", "Accept-Encoding" => "gzip"})
 		 
+			puts "Result: #{result}"
+			puts "Result body: #{result.body}"
+			puts "Result code: #{result.code}"
+			
 		    #Unzip result body, which is gzip.
-		    gz = Zlib::GzipReader.new( StringIO.new( result.body ) )
-		    result.body = gz.read
+		    #gz = Zlib::GzipReader.new( StringIO.new( result.body ) )
+		    #result.body = gz.read
 
 		    if result.code.to_i > 201
-			   puts 'ERROR with Audeience API request.'
+			   puts 'ERROR with Audience API request.'
 		    end
 
             JSON.parse(result.body)
 
 	    rescue
 		    puts "Error making POST request to Audience API. "
-		    puts response.body
+		    puts result.body
 	    end
     end	
 
@@ -66,8 +68,8 @@ class Audience
 
       base_url = 'https://data-api.twitter.com'
     
-	  consumer = OAuth::Consumer.new(keys.consumer_key, keys.consumer_secret, {:site => base_url})
-	  token = {:oauth_token => keys.access_token, :oauth_token_secret => keys.access_token_secret }
+	  consumer = OAuth::Consumer.new(keys.audience_consumer_key, keys.audience_consumer_secret, {:site => base_url})
+	  token = {:oauth_token => keys.audience_access_token, :oauth_token_secret => keys.audience_access_token_secret }
 
 	  @api = OAuth::AccessToken.from_hash(consumer, token)
 

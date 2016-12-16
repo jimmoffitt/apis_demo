@@ -71,8 +71,8 @@ class Engagement
 
       base_url = 'https://data-api.twitter.com'
     
-	  consumer = OAuth::Consumer.new(keys.consumer_key, keys.consumer_secret, {:site => base_url})
-	  token = {:oauth_token => keys.access_token, :oauth_token_secret => keys.access_token_secret }
+	  consumer = OAuth::Consumer.new(keys.engagement_consumer_key, keys.engagement_consumer_secret, {:site => base_url})
+	  token = {:oauth_token => keys.engagement_access_token, :oauth_token_secret => keys.engagement_access_token_secret }
 
 	  @api = OAuth::AccessToken.from_hash(consumer, token)
 

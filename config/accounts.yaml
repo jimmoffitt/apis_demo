@@ -1,16 +1,24 @@
 engagement_app:
   #API key/secret
-  consumer_key: 
-  consumer_secret: 
+  consumer_key:
+  consumer_secret:
   #Access token/secret
-  access_token: 
-  access_token_secret: 
+  access_token:
+  access_token_secret:
+
+audience_app:
+  #API key/secret
+  consumer_key:
+  consumer_secret:
+  #Access token/secret
+  access_token:
+  access_token_secret:
+
 
 gnip:
-   account_name: 
-   user_name:  
-   password: 
+   account_name:
+   user_name:
+   password:
 
 search30:
    label: prod
-
