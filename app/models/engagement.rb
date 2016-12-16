@@ -3,7 +3,6 @@ require 'yaml'
 require 'oauth'
 require 'zlib'
 
-
 #OK, the first goal here is to simply make a call to the /totals endpoint with @tweets collection.
 class Engagement
 
@@ -35,7 +34,6 @@ class Engagement
   
     end
 
-
     def self.make_post_request(tweets)
 
     	uri_path = "/insights/engagement/totals"
@@ -46,7 +44,7 @@ class Engagement
 
 			request = assemble_request(tweets)
 
-			puts "REQUEST: #{request}"
+			#puts "REQUEST: #{request}"
  
             result = @api.post(uri_path, request, {"content-type" => "application/json", "Accept-Encoding" => "gzip"})
 		 
@@ -58,18 +56,16 @@ class Engagement
 			   puts 'ERROR with Engagement API request.'
 		    end
 
-		    puts result.body
+		    #puts result.body
 
             result.body
 	    rescue
-		    puts "Error making POST request. "
+		    puts "Error making POST request to Engagement API. "
 		    puts response.body
 	    end
     end	
 
 	def self.get_api_access(keys)
-
-      puts "OAuth authentication!"
 
       base_url = 'https://data-api.twitter.com'
     
@@ -80,12 +76,8 @@ class Engagement
 
     end
 
-
-
     def self.get_metrics(tweets, keys)
 
-    	puts tweets
-       
       if tweets.nil? or tweets.count == 0
 	      tweets = []
 	      tweets << '806981306773020672'
@@ -97,10 +89,10 @@ class Engagement
 
    	  @api = get_api_access(keys)
 
-   	  puts "make first Engagment API call!"
-
   	  response = make_post_request(tweets)
     
+	  response
+	   
     end
 
 end

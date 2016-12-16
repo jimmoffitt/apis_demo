@@ -13,7 +13,7 @@ class Audience
 		puts 'Spinning up Audience API object.'
     end 	
 
-    def self.assemble_request(users)
+    def self.build_segment_request(users)
 
     	request = {}
     	request['user_ids'] = users
@@ -70,23 +70,11 @@ class Audience
     end
 
 
-
-    def self.get_metrics(tweets, keys)
-
-    	puts tweets
-       
-      if tweets.nil? or tweets.count == 0
-	      tweets = []
-	      tweets << '806981306773020672'
-	      tweets << '806980377189425152'
-	      tweets << '806972782206734336' 
-	  end
-
-      puts "get_metrics with #{tweets} and #{keys}"	
+    def self.build_segment(users, keys)
 
    	  @api = get_api_access(keys)
 
-   	  puts "make first Engagment API call!"
+   	  puts "Making build segment request."
 
   	  response = make_post_request(tweets)
     

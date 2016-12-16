@@ -1,11 +1,7 @@
 <a href="/">Home</a>
 
 <% if @tweets %>
-   <!-- <% puts "IN ERB: tweet counts: #{@tweets.count}" %> -->
-   <!-- <% puts "IN ERB: #{@tweets[0]["id"]}" %>  -->
-   <!-- <% puts "IN ERB: #{@tweets[0]["actor"]["preferredUsername"]}" %> -->
-   <!-- <% puts "IN ERB: #{@tweets[0]["body"]}" %> -->
-
+ 
 <h2> Search Tweet Display    </h2>
 
 <h3> Source: 30-day Search with query: "snowman" </h3>
@@ -37,6 +33,9 @@
       <% end %>
     </tbody>
   </table>
+    
+<% else %>
+    <h3> No Tweets to display. </h3>
 <% end %>
 
 <h2> Details </h2>
