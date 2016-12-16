@@ -1,12 +1,10 @@
 require "sinatra"
+require_relative "../../app/common/filer"
 
 class Application < Sinatra::Base
- 
-  attr_accessor :tweets
- 
+
   def initialize
     super()
-    @my_tweets = []
   end  
 
   #Load authentication details
@@ -44,8 +42,13 @@ class Application < Sinatra::Base
 
   	@tweets = SearchTweet.query(query, settings)
     puts "Tweets: #{@tweets}"
-
-    erb :search_results
+	
+	#Save Tweet IDs
+	filer = Filer.new
+	filer.write_ids('tweet_ids.dat', 'tweet_id', @tweets)
+	filer.write_ids('user_ids.dat', 'user_id', @tweets)
+    
+	erb :search_results
 
   end
 
@@ -61,8 +64,13 @@ class Application < Sinatra::Base
   #Gnip Engagement API ---------------------------------------------------------
   get '/get_engagements' do
     puts "Calling get_engagements with #{settings.consumer_key} and #{@my_tweets}"
+	
+	filer = Filer.new
+	tweet_ids = filer.read_ids('tweet_ids.dat')
+	
+	
 
-    results = Engagement.get_metrics(tweets, settings)
+    results = Engagement.get_metrics(tweet_ids, settings)
 
     erb :engagement_results, :locals => {:results => results}
   end
