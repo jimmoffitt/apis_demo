@@ -5,6 +5,9 @@ require 'zlib'
 
 #OK, the first goal here is to simply make a call to the /totals endpoint with @tweets collection.
 class Engagement
+   
+    MAX_TWEET_IDS_PER_REQUEST = 250
+	GROUPING_NAME = 'my_single_group'
 
 	attr_accessor :api
 
@@ -24,11 +27,11 @@ class Engagement
     	request['engagement_types'] << "favorites"
 
     	request['groupings'] = {}
-    	request['groupings']['my_single_group'] = {}
-    	request['groupings']['my_single_group']['group_by'] = []
+    	request['groupings'][GROUPING_NAME] = {}
+    	request['groupings'][GROUPING_NAME]['group_by'] = []
 
-    	request['groupings']['my_single_group']['group_by'] << 'tweet.id'
-    	request['groupings']['my_single_group']['group_by'] << 'engagement.type'
+    	request['groupings'][GROUPING_NAME]['group_by'] << 'tweet.id'
+    	request['groupings'][GROUPING_NAME]['group_by'] << 'engagement.type'
 
         request.to_json 
   
@@ -40,7 +43,7 @@ class Engagement
 
 		begin
 
-			get_api_access if @api.nil? #token timeout?
+			#get_api_access(keys) if @api.nil? #token timeout?
 
 			request = assemble_request(tweets)
 
@@ -78,10 +81,22 @@ class Engagement
     def self.get_metrics(tweets, keys)
 
    	  @api = get_api_access(keys)
-
-  	  response = make_post_request(tweets)
-    
-	  response
+	  
+	  #Potentially making multiple calls to Engagement API.
+	  responses = []
+	  
+	  
+	  tweets.each_slice(MAX_TWEET_IDS_PER_REQUEST) do |tweet_set|
+		 response = make_post_request(tweet_set)
+		 responses << response
+	  end
+	   
+	   
+	  #Re-assemble multiple responses into one.
+	  #TODO: Here we could navigate each response and combine on GROUPING_NAME
+	  
+	  responses[0].to_json
+	  
 	   
     end
 
