@@ -19,11 +19,11 @@ TO DOs:
 
 [X] Passing Tweet/User IDs between models.
 
-[] Manage multiple requests.
+[X] Manage multiple requests.
 
 [] Add in Engagement client's 'Top Tweets'. 
 
-[] Store Tweets/metadata in mongodb?
+[] Store Tweets/metadata in mongodb? Postgres?
 
 [] UI for defining search.
 
