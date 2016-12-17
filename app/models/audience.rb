@@ -140,13 +140,14 @@ class Audience
 
 
 	def self.create_and_query_audience(users, keys)
-
-	  #TODO: need to check for existing Segments/Audiences? Delete 'demo' objects each time?
-	   
+   
 	  if users.count < 500
 		 return "Not enough users to create audience. The minimum is 500. Have #{users.count}."
       end
-	   
+
+	  #TODO: need to check for existing Segments/Audiences? Delete 'demo' objects each time?
+	  
+	  
    	  @api = get_api_access(keys)
 
    	  puts "Creating Segment, Audience, and querying it."
@@ -177,7 +178,7 @@ class Audience
 	  puts "Querying Audience with #{audience_id} with #{request}."
 	  response = make_post_request(request, 'audiences', audience_id, 'query')
 
-      response
+      response.to_json
 
 	end
 
