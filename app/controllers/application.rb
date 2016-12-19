@@ -42,16 +42,20 @@ class Application < Sinatra::Base
 
   end
 
-  get '/display_search_results' do
+  post '/search_results' do
 
-  	puts "Calling get_tweets with #{settings.gnip_user_name}"
+	query = params['query']
+	fromdate = params['fromdate']
+	todate = params['todate']
 
     #query = "from%3Asnowman" #Need to URL encode
-    query = "snowman winter (today OR tonight OR white OR kids)"
-
-  	@tweets = SearchTweet.query(query, settings)
-    puts "Tweets: #{@tweets.count}"
 	
+	if query == '' or query.nil?
+        query = "snowman winter (today OR tonight OR white OR kids)"
+	end 
+	
+	@tweets = SearchTweet.query(settings, query, fromdate, todate)
+
 	#Save Tweet IDs
 	if @tweets.count > 0 
 	   filer = Filer.new

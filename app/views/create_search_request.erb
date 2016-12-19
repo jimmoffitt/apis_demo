@@ -1,5 +1,17 @@
-<form action="/create_search_request">
+<form method="POST" action="/search_results">
+    
     <label for="query">Enter Search Query:</label>
-    <input type="text" name="query"  maxlength="2048" size="2048">
+    <input type="text" name="query"  maxlength="2048" size="180">
+    
+    <p>
+
+    <label for="fromdate">Start Date/Time (YYYYMMDDHHMM):</label>
+    <input type="text" name="fromdate"  maxlength="20" size="20">
+
+    <label for="todate">End Date/Time (YYYYMMDDHHMM):</label>
+    <input type="text" name="todate"  maxlength="20" size="20">
+
+    </p>
+    
     <input type="submit">
 </form>
